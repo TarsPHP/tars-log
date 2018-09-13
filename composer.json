@@ -7,10 +7,15 @@
     {
       "name": "Chen liang",
       "email": "liangchen@yuewen.com"
+    },
+    {
+      "name": "Jingfeng liu",
+      "email": "liujingfeng.a@yuewen.com"
     }
   ],
   "require":{
-    "php": ">=5.3",
+    "php": ">=5.5",
+    "monolog/monolog": "^1.23",
     "phptars/tars-client": "~0.1"
   },
   "autoload": {
