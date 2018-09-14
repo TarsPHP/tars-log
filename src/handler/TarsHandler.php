@@ -31,7 +31,7 @@ class TarsHandler extends AbstractProcessingHandler
 
         $moduleName = $this->logConf->getModuleName();
         $moduleData = explode('.', $moduleName);
-        $this->app = $moduleData ?: $this->app;
+        $this->app = $moduleData ? $moduleData[0] : $this->app;
         $this->server = isset($moduleData[1]) ? $moduleData[1] : $this->server;
     }
 
@@ -93,6 +93,6 @@ class TarsHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        $this->logServant->logger($this->app, $this->server, $record['channel'], $this->dateFormat, $record['formatted']);
+        $this->logServant->logger($this->app, $this->server, $record['channel'], $this->dateFormat, [$record['formatted']]);
     }
 }
