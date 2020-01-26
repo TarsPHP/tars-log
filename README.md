@@ -2,54 +2,69 @@
 # tars-log  
 ------------------------
 
-`tars-log` 是 `phptars` 远程日志模块
+`Tar log is a 'phptars' remote log module
 
-## 安装
 
-使用`composer`进行安装
+
+Installation of cable vehicles
+
+
+
+Install using 'composer'
+
 `composer install phptars/tars-log`
 
-## 使用
 
-### 配置
 
-实例化CommunicatorConfig，可以逐个参数进行配置，也可以通过平台下发的配置文件统一配置
-- 单独配置某个参数
+The use of
+
+
+
+The allocation of the two elements
+
+
+
+Instantiate communicator config, which can be configured one by one or through the configuration files distributed by the platform
+
+-Configure a parameter separately
 ```php
 $config  = new \Tars\client\CommunicatorConfig();  
 $config->setLocator("tars.tarsregistry.QueryObj@tcp -h 172.16.0.161 -p 17890");  
 $config->setModuleName("tedtest");  
 $config->setCharsetName("UTF-8");
-$config->setLogLevel("INFO");	//日志级别：`INFO`、`DEBUG`、`WARN`、`ERROR` 默认INFO
-$config->setSocketMode(2);		//远程日志连接方式：1：socket，2：swoole tcp client 3: swoole coroutine tcp client
+$config->setLogLevel("INFO");	//log level：`INFO`、`DEBUG`、`WARN`、`ERROR` default INFO
+$config->setSocketMode(2);		//Remote log connection mode：1：socket，2：swoole tcp client 3: swoole coroutine tcp client
 ```
-- 配置文件初始化参数
+- Profile initialization parameters
 ```php
 $config = new \Tars\client\CommunicatorConfig();
-$sFilePath = '项目地址/src/conf'; //配置文件下发路径
+$sFilePath = 'project address/src/conf'; //Profile distribution path
 $config->init($sFilePath);
 ```
 
-### 输出日志
-输出日志提供两种方式，一种直接调用`LogServant`的`logger`方式输出远程日志，另一种结合`monolog`输出远程日志(推荐)
+###Output log
 
-- 调用`LogServant`的`logger`方式
+There are two ways to output logs: one is to directly call the 'logger' mode of 'logservice' to output remote logs, and the other is to output remote logs in combination with 'monitoring' (recommended)
+
+
+
+-Calling 'logger' method of 'logservant'
 ```php
 $logServant  = new \Tars\log\LogServant($config);  
-$appName = "App";	//应用名称
-$serverName = "server";	//服务名称
-$file = "test.log";	//文件名称
-$format = "%Y%m%d";	//日志时间格式
-$buffer = ["hahahahaha"];	//日志内容，数组，每个元素为一条日志
+$appName = "App";	//app name
+$serverName = "server";	//service name
+$file = "test.log";	//file name
+$format = "%Y%m%d";	//log time
+$buffer = ["hahahahaha"];	//Log content, array, each element is a log
 $result = $logServant->logger($appName,$serverName,$file,$format,$buffer);
 ```
 
-- 结合`monolog`方式(推荐)
+- Combined with 'monolog' method (recommended)
 ```php
 $logger = new \Monolog\Logger("tars_logger");
 //remote log
 $tarsHandler = new \Tars\log\handler\TarsHandler($config);
-//local log 这里可以根据业务需要添加其他handler，比如StreamHandler、ElasticSearchHandler 等
+//local log Here you can add other handlers according to business needs，such as StreamHandler、ElasticSearchHandler 
 $streamHandler = new \Monolog\Handler\StreamHandler(ENVConf::$logPath . "/" . __CLASS__  . ".log");
 
 $logger->pushHandler($tarsHandler);
