@@ -91,7 +91,7 @@ class TarsHandler extends AbstractProcessingHandler
      * @return void
      * @throws \Exception
      */
-    protected function write(array $record)
+    protected function write(array $record):void
     {
         $this->logServant->logger($this->app, $this->server, $record['channel'], $this->dateFormat, [$record['formatted']]);
     }
