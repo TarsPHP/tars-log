@@ -46,9 +46,99 @@ $result = $logServant->logger($appName,$serverName,$file,$format,$buffer);
 
 - 结合`monolog`方式(推荐)
 ```php
+use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Logger;
+use Tars\client\CommunicatorConfig;
+use Tars\log\LogServant;
+
+class TarsHandler extends AbstractProcessingHandler
+{
+    protected $app = 'Undefined';
+    protected $server = 'Undefined';
+    protected $dateFormat = '%Y%m%d';
+
+    private $logServant;
+    private $logConf;
+
+    public function __construct(CommunicatorConfig $config, $servantName = "tars.tarslog.LogObj", $level = Logger::WARNING, $bubble = true)
+    {
+        parent::__construct($level, $bubble);
+        $this->logConf = $config;
+        $this->logServant = new LogServant($config, $servantName);
+
+        $moduleName = $this->logConf->getModuleName();
+        $moduleData = explode('.', $moduleName);
+        $this->app = $moduleData ? $moduleData[0] : $this->app;
+        $this->server = isset($moduleData[1]) ? $moduleData[1] : $this->server;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApp()
+    {
+        return $this->app;
+    }
+
+    /**
+     * @param string $app
+     */
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServer()
+    {
+        return $this->server;
+    }
+
+    /**
+     * @param string $server
+     */
+    public function setServer($server)
+    {
+        $this->server = $server;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+
+    /**
+     * Writes the record down to the log of the implementing handler
+     *
+     * @param  array $record
+     * @return void
+     * @throws \Exception
+     */
+    protected function write(array $record)
+    {
+        $this->logServant->logger($this->app, $this->server, $record['channel'], $this->dateFormat, [$record['formatted']]);
+    }
+}
+```
+
+```php
 $logger = new \Monolog\Logger("tars_logger");
 //remote log
-$tarsHandler = new \Tars\log\handler\TarsHandler($config);
+$tarsHandler = new TarsHandler($config);
 //local log 这里可以根据业务需要添加其他handler，比如StreamHandler、ElasticSearchHandler 等
 $streamHandler = new \Monolog\Handler\StreamHandler(ENVConf::$logPath . "/" . __CLASS__  . ".log");
 

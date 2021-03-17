@@ -8,7 +8,6 @@
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Tars\log\handler\TarsHandler;
 
 require_once '../vendor/autoload.php';
 $config = new \Tars\client\CommunicatorConfig();
@@ -34,23 +33,23 @@ try {
 
 //use monolog
 
-$logger = new Logger("tars_logger");
-$tarsHandler = new TarsHandler($config);
-//local log
-$streamHandler = new StreamHandler(__DIR__ . '/test.log');
-
-$logger->pushHandler($tarsHandler);
-$logger->pushHandler($streamHandler);
-
-$array = [
-    "key1" => "value1",
-    "key2" => "value2",
-    "key3" => "value3"
-];
-$logger->debug("add a debug message", $array);
-$logger->info("add a info message", $array);
-$logger->notice("add a notice message", $array);
-$logger->warning("add a warning message", $array);
-$logger->error("add a error message", $array);
-$logger->critical("add a critical message", $array);
-$logger->emergency("add a emergency message", $array);
+//$logger = new Logger("tars_logger");
+//$tarsHandler = new TarsHandler($config);
+////local log
+//$streamHandler = new StreamHandler(__DIR__ . '/test.log');
+//
+//$logger->pushHandler($tarsHandler);
+//$logger->pushHandler($streamHandler);
+//
+//$array = [
+//    "key1" => "value1",
+//    "key2" => "value2",
+//    "key3" => "value3"
+//];
+//$logger->debug("add a debug message", $array);
+//$logger->info("add a info message", $array);
+//$logger->notice("add a notice message", $array);
+//$logger->warning("add a warning message", $array);
+//$logger->error("add a error message", $array);
+//$logger->critical("add a critical message", $array);
+//$logger->emergency("add a emergency message", $array);

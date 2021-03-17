@@ -2,7 +2,7 @@
   "name": "phptars/tars-log",
   "description": "tars的远程日志",
   "minimum-stability": "dev",
-  "version":"0.1.5",
+  "version":"0.1.6",
   "authors": [
     {
       "name": "Chen liang",
@@ -11,11 +11,14 @@
     {
       "name": "Jingfeng liu",
       "email": "liujingfeng.a@yuewen.com"
+    },
+    {
+      "name": "Panpan Ding",
+      "email": "dpp2009@sina.com"
     }
   ],
   "require":{
     "php": ">=5.5",
-    "monolog/monolog": "^1.23",
     "phptars/tars-client": "~0.1"
   },
   "autoload": {
